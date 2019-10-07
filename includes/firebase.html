@@ -1,0 +1,383 @@
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-storage.js"></script>
+
+
+<script>
+
+    var firebaseConfig = {
+    apiKey: "AIzaSyAbt2TaZihi0VKAx0s7zxgFKLGgOwGAfAI",
+    authDomain: "helpmefilm-a2808.firebaseapp.com",
+    databaseURL: "https://helpmefilm-a2808.firebaseio.com",
+    projectId: "helpmefilm-a2808",
+    storageBucket: "helpmefilm-a2808.appspot.com",
+    messagingSenderId: "113446590680",
+    appId: "1:113446590680:web:8f1217caa877f9b2f35fad",
+    measurementId: "G-WS7T7M4PE3"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  var database = firebase.database();
+  var companyName,role,from,to,roleDesc,userID,visibilityOption="";;
+
+  var roleKey="";
+  var additionalHTML="";
+  var firstTime=false;
+
+
+
+    function addRole(companyName,role,inputFrom,inputTo,roleDesc,userID) {
+    if(this.roleKey==""){
+      addNewRole(companyName,role,inputFrom,inputTo,roleDesc,userID);
+    }else{
+    updateRole(companyName,role,inputFrom,inputTo,roleDesc,userID);
+    }
+
+    }
+
+
+    function addNewRole(companyName,role,inputFrom,inputTo,roleDesc,userID){
+       console.log(role+"\n"+companyName+"\n"+inputFrom+"\n"+inputTo+"\n"+roleDesc+"\n"+userID);
+     if(companyName!="" && role!="" && inputFrom!="" && inputTo!="" && roleDesc!="" && userID!=""){
+      this.role = role;
+      this.companyName = companyName;
+      this.from = inputFrom;
+      this.to = inputTo;
+      this.roleDes = roleDesc;
+      this.userID=1;
+        var databaseURL = "Users/User"+userID+"/career/";
+
+        var key = database.ref(databaseURL).push().key;
+
+        console.log("key is:" + key);
+        databaseURL = databaseURL+key+"/";
+                console.log("path:" + databaseURL);
+
+        database.ref(databaseURL).set({
+            companyName:this.companyName,
+            role:this.role,
+            from:this.from,
+            to:this.to,
+            roleDesc:this.roleDes
+        });      
+      }else {
+        alert("Please fill in all the required fields");
+        
+      }
+      document.getElementById('myModal').display="none";
+    }
+
+  function loadAllData(userID){
+    readResume(userID);
+    readSkills(userID);
+     var path = window.location.pathname;
+    var page = path.split("/").pop();
+    if(page=="viewProfile.php"){
+      this.visibilityOption="hidden";
+    }
+  }
+
+    function readResume(userID){
+      this.userID = userID;
+     
+      var databaseURL = "Users/User"+this.userID+"/career/";
+
+      var ref = firebase.database().ref(databaseURL);
+      database.ref(databaseURL).once('value',function(snapshot){
+      
+      var htmlValue ="";
+        snapshot.forEach(function(childSnapshot){
+       
+          var childKey = childSnapshot.key;
+          var childData = childSnapshot.val();
+          companyName = childData['companyName'];
+          role = childData['role'];
+          from = childData['from'];
+          to = childData['to'];
+           roleDesc = childData['roleDesc'];
+           htmlValue += " <!--row starts here-->\n\
+                                                          <div class = 'row' style='margin-top:5px;padding:5px;border-radius:10px;'>\n\
+                                <div class = 'col-md-8'>\n\
+                                    <div class = 'row'>\n\
+                                        <div class = 'col'>\n\
+                                            <h5>"+role+"</h5>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class = 'row'>\n\
+                                        <div class = 'col' id = 'divName'>\n\
+                                            "+companyName+"\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class = 'row'>\n\
+                                        <div class = 'col'>\n\
+                                            "+from+" to "+to+"\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class = 'row'>\n\
+                                        <div class = 'col'>\n\
+                                        <details><summary>Role</summary>\n\
+                                             <label>"+roleDesc+"</label>\n\
+                                                </details>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <div class = 'col-md-4 text-' id='divEditOptions'>\n\
+                                    <div class = 'row' >\n\
+                                        <div class = 'col-md-6'>\n\
+                                            <button id = 'btEdit' "+visibilityOption+" style='border:none;'onclick='passDataToModal(\""+childKey+"\",\""+companyName+"\",\""+role+"\",\""+inputFrom+"\",\""+inputTo+"\",\""+roleDesc+"\")' data-toggle='modal' data-target='#myModal'><span class = 'fa fa-pencil'></button>\n\
+                                        </div>\n\
+                                        <div class = 'col-md-6'>\n\
+                                            <button id = 'btEdit' "+visibilityOption+" style='border:none;' onclick='removeRole(\""+childKey+"\")' ><span class = 'fa fa-trash'></span></button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                                </div><hr style='background-color:rgba(255,255,255,0.1);'>\n\
+                           ";
+
+
+
+          console.log(childData['companyName']);
+        });
+
+       document.getElementById('resumeData').innerHTML =htmlValue;
+      });
+  
+  //creating a child for storing user resumeUrl, profile picture url and skills
+  createSpaceForUrls();
+ 
+    }
+    function createSpaceForUrls(){
+            database.ref("Users/User"+this.userID+"/").once('value',function(snapshot){
+        if(snapshot.hasChild('resumeUrl')){
+
+          document.getElementById("resumeUrlDiv").innerHTML= "<a href = '"+snapshot.val()['resumeUrl']+"' target='blank'><span>View Resume</span></a>";
+          document.getElementById("profileImage").src=snapshot.val()['pictureUrl'];
+        }else {
+
+          database.ref("Users/User"+this.userID+"/").update({
+
+            resumeUrl:"",
+            pictureUrl:""
+            
+          }); 
+        }
+
+      });
+        //creating a child for storing user Skills
+        database.ref("Users/User"+this.userID+"/").once('value',function(snapshot){
+        if(snapshot.hasChild('Skills')){
+          document.getElementById("resumeUrlDiv").innerHTML= "<a href = '"+snapshot.val()['resumeUrl']+"' target='blank'>View Resume</a>";
+        }else {
+          var key = database.ref("Users/User"+this.userID+"/Skills").push().key;
+          database.ref("Users/User"+this.userID+"/Skills/"+key).update({
+            skillName:""
+            
+          }); 
+        }
+
+      });
+    }
+
+    function checks(){
+    }
+
+    function removeRole(roleKey){
+            
+            var databaseURL = "Users/User"+this.userID+"/career/"+roleKey;
+            database.ref(databaseURL).remove(); 
+            readResume(this.userID);
+
+
+    }
+
+    
+    function validateData(){
+
+    }
+    function passDataToModal(roleKey,companyName,role,inputFrom,inputTo,roleDesc) {
+      this.roleKey = roleKey;
+         $(document).ready(function() {
+
+        $('#myModal').find('#role').val(role);
+        $('#myModal').find('#companyName').val(companyName);
+        $('#myModal').find('#inputFrom').val(inputFrom);
+        $('#myModal').find('#inputTo').val(inputTo);
+        $('#myModal').find('#btAdd').val("Update");
+        $('#myModal').find('textarea.editor').val("sss");
+
+
+    });
+
+    }
+    function updateRole(companyName,role,inputFrom,inputTo,roleDesc,userID){
+      var ref = firebase.database().ref(databaseURL);
+            var databaseURL = "Users/User"+this.userID+"/career/"+this.roleKey;
+
+
+    try{
+   database.ref(databaseURL).update({
+            companyName:companyName,
+            role:role,
+            from:from,
+            to:to,
+            roleDesc:roleDesc
+        });   
+    }catch(error){
+      console.log(error);
+    }
+
+    }
+
+    function uploadResume(resumeFile){
+      var files = resumeFile.target.files;
+      var file = files[0];
+      var storageUrl="UserData/User"+this.userID+"/"+file.name;
+      console.log(storageUrl);
+      var storageRef = firebase.storage().ref(storageUrl);
+       document.getElementById("divSpinner").innerHTML=" <div class='spinner-border text-primary role='status'></div>";
+      storageRef.put(file).then(function(snapshot){
+        storageRef.getDownloadURL().then(function(url){
+
+          document.getElementById("divSpinner").innerHTML=" Uploaded <span class = 'fa fa-check'></span>";
+
+         database.ref("Users/User"+this.userID+"/").update({
+            resumeUrl:url
+          
+          }); 
+        
+        });
+      });
+
+  setTimeout(function(){
+    document.getElementById("divSpinner").innerHTML = '';
+}, 3000);
+
+    }
+
+    function addSkills(skillName,userID){
+      if(skillName!=""){
+      this.userID = userID;
+     var key = database.ref("Users/User"+this.userID+"/Skills").push().key;
+     console.log(this.userID);
+     database.ref("Users/User"+this.userID+"/Skills/"+key).update({
+            skillName:skillName
+            
+          });
+     document.getElementById("textSkills").focus();
+        document.getElementById("textSkills").value="";
+     readSkills(this.userID);
+   }else{
+    window.alert("Skill field cant be empty!");
+    document.getElementById("textSkills").focus();
+        document.getElementById("textSkills").value="";
+
+   }
+
+    }
+
+
+    function readSkills(userID){
+
+      document.getElementById("skillDiv").innerHTML="";
+      this.userID=userID;
+            database.ref("Users/User"+this.userID+"/Skills/").once('value',function(snapshot){
+
+        snapshot.forEach(function(childSnapshot){
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                if(childData['skillName']!=""){
+                document.getElementById("skillDiv").innerHTML += "<div  class= 'row ' >\n\
+                            <div class = 'col-md-9'>\n\
+                             <span class>"+childData['skillName']+"</span><br/>\n\
+                            </div>\n\
+                            <div class ='col-md-3 text-center' ><a onClick='deleteSkills(\""+childKey+"\")' class='fa fa-times-circle' "+visibilityOption+" ></a>\n\
+                          \n\
+                           </div>";
+                         }
+              });
+            });
+
+    }
+ 
+    function deleteSkills(skillKey){
+      console.log("called");
+    database.ref("Users/User"+this.userID+"/Skills/"+skillKey).remove(); 
+    readSkills(this.userID);
+    }
+
+
+    function addEducation(){
+
+    }
+
+
+function editBio(bioText){
+document.getElementById("bioDiv").innerHTML= " <form action='profile.php' method='POST'><TextArea id ='editedBio'  name='editedBio' rows='3' style='width:100%;'>"+bioText+"</TextArea>\n\
+   <input type='submit' id ='btUpdateBio'  name = 'btUpdateBio' value='Done'><button  id= 'btCancel' onclick='cancelEdit(\""+"bioDiv"+"\",\""+"bioLabel"+"\",\""+bioText+"\")'> Cancel</button></form>";
+            document.getElementById("editedBio").value=bioText;
+}
+
+
+
+
+function showEditOptions(divName,data){
+
+            
+document.getElementById(divName).innerHTML=" <form action='profile.php' method='POST'><input type='text' id ='editedData'  name='editedData'>\n\
+   <input type='submit' id ='btUpdateProfession'  name = 'btUpdateProfession' value='Done'><button  id= 'btCancel' onclick='cancelEdit(\""+divName+"\",\""+"labelProfession"+"\",\""+data+"\")'> Cancel</button></form>";
+            document.getElementById("editedData").value=data;
+
+
+
+    }
+
+    function cancelEdit(divName,labelName,data){
+     
+
+       document.getElementById(divName).innerHTML=" <label id='"+ labelName+"'>"+data+"</label>";
+      
+    }
+
+    function uploadPicture(pictureFile){
+    var files = pictureFile.target.files;
+      var file = files[0];
+      var storageUrl="UserData/User"+this.userID+"/"+file.name;
+      console.log(storageUrl);
+      var storageRef = firebase.storage().ref(storageUrl);
+       document.getElementById("imageSpinner").innerHTML=" <div class='spinner-border text-primary role='status'></div>";
+      storageRef.put(file).then(function(snapshot){
+        storageRef.getDownloadURL().then(function(url){
+
+          document.getElementById("profileImage").src=url;
+                document.getElementById("imageSpinner").innerHTML="";
+
+
+         database.ref("Users/User"+this.userID+"/").update({
+            pictureUrl:url
+          
+          }); 
+        
+        });
+      });
+    }
+
+
+function hideEditOptions(){
+  console.log("called");
+  var ele = document.getElementsByTagName("input");
+        if (ele.length > 0) {
+            for (i = 0; i < ele.length; i++) {
+                if (ele[i].type == "button")
+                    ele[i].style.visibility = "hidden";
+            }
+        }
+ ele =document.getElementsByTagName("button ");
+
+
+}
+
+
+</script>

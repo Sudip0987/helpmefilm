@@ -1,0 +1,104 @@
+body {
+  padding : 10px ;
+  background-color:#23272A;
+
+  
+}
+a:link,a:visited {color:rgba(255,255,255,0.9);}      /* unvisited link */
+a:hover {color:rgba(255,255,255,0.8);}  /* mouse over link */
+a:active {color:rgba(255,255,255,0.8);}
+.container {
+  margin: 50px;
+  padding: 10px;
+      max-width: 100%;
+
+
+
+}
+
+
+.row{
+  color:rgba(255,255,255,0.8);
+  opacity: 1;
+}
+.col{
+    background-color: #2C2F33;
+
+}
+.form-control{
+  background-color:transparent;
+  color:rgba(255,255,255,0.8);
+  border-color:rgba(255,255,255,0.1); 
+
+}.form-control:focus{
+  background-color:transparent;
+  color:rgba(255,255,255,0.8);
+  border-color:rgba(255,255,255,0.1); 
+
+}
+
+
+h5{
+  color:rgba(255,255,255,0.9);
+}
+h7{
+  color:rgba(255,255,255,0.7);
+}
+small{
+    color:rgba(255,255,255,0.5);
+
+}
+
+
+.card
+{
+  background-color: #2C2F33
+
+
+
+;
+  border-radius: 5px;
+    
+
+;
+}
+.card-body {
+    border-radius: 10px;
+    background-color:#2C2F33
+
+
+
+;
+
+}
+
+
+.close {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}
+
+
+
+
