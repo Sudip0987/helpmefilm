@@ -22,6 +22,10 @@
        <li class="nav-item">
         <a class="nav-link" href="jobs.php">Jobs</a>
       </li> 
+      
+       <li class="nav-item">
+        <a class="nav-link" href="viewContest.php">Contests</a>
+      </li>
      <!-- Dropdown -->
  
    
@@ -58,6 +62,12 @@
 
         document.getElementById("menuList").innerHTML=" <form method='post' action = 'postJob.php' id='jobForm' style = 'margin-right: 10px;' >\n\
               <button class = 'btn btn-warning' id ='btJob'>Post a Job</button>\n\
+            </form>";     
+
+    }else if(page=="viewContest.php" || page=="contestDetails.php"){
+
+        document.getElementById("menuList").innerHTML=" <form method='post' action = 'postContest.php' id='jobForm' style = 'margin-right: 10px;' >\n\
+              <button class = 'btn btn-warning' id ='btJob'>Create a Contest</button>\n\
             </form>";     
 
     }

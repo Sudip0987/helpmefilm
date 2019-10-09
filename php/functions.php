@@ -136,8 +136,14 @@ class Functions
             $sql = "Insert INTO Topic (topic,topicDesc,posterID,postType,location) VALUES
 		('$topic','$topicDesc',(SELECT userID from Users where email='$email'),'$postType','$location')";
 
+            if(isset($_POST['subType'])){
+                $subType= $_POST['subType'];
+                $contestDeadline= $_POST['subDeadline'];
+                   $sql = "Insert INTO Topic (topic,topicDesc,posterID,postType,location,contestDeadline,subType) VALUES
+        ('$topic','$topicDesc',(SELECT userID from Users where email='$email'),'$postType','$location','$contestDeadline','$subType')";
+            }
             mysqli_query($db, $sql);
-            $newTopicID = mysqli_insert_id($db);
+            $newTopicID = mysqli_insert_id($db) or die($sql);
             foreach($tagsArray as $tagValue){
                                   $newTagID = $this->checkTags($db,$tagValue);
 
@@ -175,12 +181,19 @@ class Functions
     	$topicID = $_POST['topicID'];
     	 $topic = mysql_real_escape_string($_POST['topic']);
         $topicDesc = mysql_real_escape_string($_POST['editor']);
-        $email = $_POST['email'];
         if (empty($topic))
         {
             array_push($errors, "Topic is required ");
 
         }
+
+          if(isset($_POST['subType'])){
+                        $subType= $_POST['subType'];
+                $contestDeadline= $_POST['subDeadline'];
+            $sql ="Update Topic set topic='".$topic."', subType='b".$subType."', contestDeadline='s".$contestDeadline."', topicDesc='".$topicDesc."' where topicID=".$topicID.";";
+                        echo $sql;
+                        echo $ss;
+            }
        
         if (count($errors) == 0)
         {
@@ -346,8 +359,9 @@ class Functions
            if(isset($_SESSION['userID'])){
         $applicantEmail = $_SESSION['email'];
         $jobID = $_POST['jobID'];
-              $sql = "Insert INTO Applicants (topicID,userID) VALUES
-                ('$jobID',(SELECT userID from Users where email='$applicantEmail'))";
+        $subDetail=$_POST['subDetail'];
+              $sql = "Insert INTO Applicants (topicID,userID,subDetail) VALUES
+                ('$jobID',(SELECT userID from Users where email='$applicantEmail'),'$subDetail')";
             mysqli_query($db, $sql) or die($sql);
             }else{
     header('location:loginPage.php');

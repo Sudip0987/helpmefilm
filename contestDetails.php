@@ -26,27 +26,77 @@ $_SESSION['topicID'] = $_GET['topicID'];
 	</head>
 
 	<?php
+	    if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+} 
+$userID="";
+    if(isset($_SESSION['userID'])){
+    	$userID= $_SESSION['userID'];
+    	$email= $_SESSION['email'];
+    }
+    	$topicID = $_SESSION['topicID'];
+
+
 		include ("./includes/header.php");
+		    include("includes/contestFirebase.php");
+
 	?>
 		
 
-<body>
+<body onload="loadApplicants('<?php echo $topicID; ?>','<?php echo $userID; ?>')">
+	<!--onchange="uploadFile(event,'<?php echo $topicID; ?>','<?php echo $userID; ?>',document.getElementById('subDetail').value)" -->
+<input type='file' hidden  onchange="storeFile(event)" id = 'btUpload' name='btApply'>
+
 
 	<?php
+	$visibilityOption="";
 	$topic = "";
 	$topicDesc ="";
-	$topicID = $_SESSION['topicID'];
 	$pdate = "";
 	$posterID="";
-	$applyButton="<button type='submit' name='btApply' class='btn btn-warning text-dark btn-banner btn-block'>Apply for this job </button>";
-	$location  = "";
+	$subOption="Upload a file";
+	$applyButton="<div class ='card'>
+	<div class='card-body' style='background-color:black;'>
+	<div class='row'>
+					<div class = 'col-12'>
+					<p class='form-control' style='border:none'>Description</a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class = 'col-12'>
+					<textarea  style='margin:10px;margin-top:0px;' id='subDetail' name ='subDetail 'class='form-control' rows='4' cols='12'></textarea>
+					</div>
+				</div>
+				<div class='row'>
+					<div class = 'col-6'>
+					<p class='form-control' style='border:none'>Upload your file</a>
+					</div>
+					<div class = 'col-6'>
+					
+                                      <label  class='btn btn-warning text-dark btn-banner btn-block' for='btUpload'  ><span>Choose a file </span> </label >
+                                      <div id='divSpinner'>
+
+                                      </div>
+					</div>
+				</div>
+				<div class='row'>
+					<div class = 'col-12'>
+						
+					</div>
+				</div>
+	</div>
+	</div>";
+	?>
+
+	<button type='submit' hidden onclick="uploadFile('<?php echo $topicID; ?>','<?php echo $userID; ?>',document.getElementById('subDetail').value,'<?php echo $email; ?>');" name='btApply' id="btApply" class='btn btn-warning text-dark btn-banner btn-block'>Make a Submission</button>" 
+	<?php $location  = "";
 	$tags="";
 	$name =""; 
 	$email = "";
 	$advertiserBio="";
 	$totalReplies = "";
 	//$sql = "select topic,topicDesc, count(replyID) as totalReplies from topic t,Replies r where t.topicID=r.topicID and topicID="."9"."limit 1";
-	 $sql = "select bio,topic,topicDesc,location, userID, count(replyID) as totalReplies,email,name,pdate from topic t,Replies r, Users u where postType='job' and u.userID = t.posterID and t.topicID=r.topicID and t.topicID=".$topicID." limit 1";
+	 $sql = "select bio,topic,topicDesc,location, userID, count(replyID) as totalReplies,email,name,pdate from topic t,Replies r, Users u where postType='contest' and u.userID = t.posterID and t.topicID=r.topicID and t.topicID=".$topicID." limit 1";
 	 $result = mysqli_query($db,$sql) or die ($sql);
     if(mysqli_num_rows($result)>0){
     	while($row=$result->fetch_assoc()){
@@ -83,16 +133,8 @@ $_SESSION['topicID'] = $_GET['topicID'];
 		     }
 		     	$tempID=$row['userID'];
 		     	$tempName = $row['name'];
-		     	$applicantProfile .= "<div class='row' style='margin-top:5px;'>
-          							<div class='col'>
-          							<a href = 'viewProfile.php?userID=$tempID'>$tempName</a>
-          							</div>
-          							</div>";
 
 		    	}
-		    }else{
-		    	$applicantProfile = "No applicants!";
-
 		    }
     //applicant function ends here
 
@@ -106,9 +148,9 @@ $_SESSION['topicID'] = $_GET['topicID'];
 $showOptions = "";
 	$applyOption = "<div class = 'col'>
 							<form method = 'POST' href = 'jobPage.php'>
-							<textarea style='margin:10px;margin-top:0px;' hidden name ='subDetail' class='form-control' rows='4' cols='12'></textarea>
 							<input type = 'hidden' value = '$topicID' name = 'jobID'/>
 							$applyButton
+							<label  class='btn btn-warning text-dark btn-banner btn-block' id='applyLabel' for='btApply'  ><span id='submitSpan'>Submit </span> </label >
 							<button type='submit' name='btRefer' class='btn btn-warning text-dark btn-banner btn-block'>Send to a friend</button>
 							</form>
 							</div>
@@ -137,12 +179,17 @@ $showOptions = "";
     if($userEmail==$posterEmail){
     $applyOption="	<div class = 'card' style='border:none'>
 								<div class = 'card-body'>
-									<h5 class='card-title'>Applicants</h5>
+									<h5 class='card-title'>Submissions</h5>
 								
 									
 									<div class = 'row'>
+
 										<div class = 'col-12 col-md-12 col-lg-12'>
-											$applicantProfile
+											<div class='row' style='margin-top:5px;'>
+			          							<div class='col' id ='divApplicants'>
+			          							
+			          							</div>
+			          							</div>
 										</div>
 
 									</div>
@@ -159,7 +206,7 @@ $showOptions = "";
 				      &#8942;
 				      </button>
 				      <div class='dropdown-menu dropdown-menu-right' style = 'background-color:rgba(200,200,200);' aria-labelledby='dropdownMenuButton'>
- <a class = 'dropdown-item btn-info' style='color:black;' href = 'forum.php?topicID=$topicID'>Edit</a>
+ <a class = 'dropdown-item btn-info' style='color:black;' href = 'postContest.php?topicID=$topicID'>Edit</a>
 
                   <form method='POST' action = 'jobPage.php'>
                   <input type='hidden' value='$topicID' name='topicID'/>
@@ -179,7 +226,7 @@ echo "<div class = 'container-expand-md'>
 	<div class = 'row sticky-top' style= 'margin-top:25px;margin-bottom:25px;'>
 
 
-		<div class = 'col-9 col-md-9 col-lg-9' >
+		<div class = 'col-8 col-md-8 col-lg-8' >
 			<div class = 'card'>
 				<div class = 'card-body'>
 					<div class = 'row'>
@@ -222,12 +269,15 @@ echo "<div class = 'container-expand-md'>
 				</div>
 			</div>
 		</div> <!--first column ends here -->
-		<div class = 'col-3 col-md-3 col-lg-3' style='max-height:700px;
+		<div class = 'col-4 col-md-4 col-lg-4' style='max-height:700px;
     overflow-y:scroll;'>
 			<div class = 'card'>
 				<div class = 'card-body'>
 					<div class = 'row'>
+						
+						<div id='applyDiv'>
 						$applyOption
+						</div>
 						
 
 						</div>
@@ -247,5 +297,7 @@ echo "<div class = 'container-expand-md'>
 		
 	<div>
 </body>
-
+<script type="text/javascript" href = "includes/contestFi.php">
+	
+</script>
 </html>

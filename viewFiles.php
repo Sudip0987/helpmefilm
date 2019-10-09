@@ -14,9 +14,10 @@
       if (session_status() == PHP_SESSION_NONE) {
     session_start();
 } 
+    $userID= $_SESSION['userID'];
+
 		include ("includes/header.php");
 		include("includes/handleData.php");
-    $userID= $_SESSION['userID'];
 
 	?>
 

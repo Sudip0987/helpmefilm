@@ -91,7 +91,7 @@ loadUserFiles(departmentkey,userID);
  function uploadFile(resumeFile, userID){
       var files = resumeFile.target.files;
       var file = files[0];
-      var storageUrl="resources/"+this.currentDepKey+"/"+file.name;
+      var storageUrl="contest/"+this.currentDepKey+"/"+file.name;
       console.log(storageUrl);
       var storageRef = firebase.storage().ref(storageUrl);
        document.getElementById("divSpinner").innerHTML=" <div class='spinner-border text-primary role='status'></div>";
@@ -151,5 +151,12 @@ loadUserFiles(departmentkey,userID);
 
         
     }
+    function checks(){
+ database.ref("resources/").set({
+            resName:file.name,
+            
+
+          
+          });     }
 
 </script>
