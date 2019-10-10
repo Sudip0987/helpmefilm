@@ -1,5 +1,6 @@
-<?php include('./php/registerphp.php');
+<?php
 include('./php/checkUser.php');
+ include('./php/registerphp.php');
 $_SESSION['topicID']='-1'; ?>
 <!doctype html>
 <html lang="en">

@@ -60,8 +60,8 @@ if(isset($_SESSION['email'])){
                               <input type="text" class="form-control" name = "contact" id="contact" placeholder="Contact no (Optional)">
                             </div>
                             <div class="form-group col-md-12">
-                              <input type="text" class="form-control"  name = "address" id="address" placeholder="Location (Optional)">
-                              <input type="text" class="form-control"   name = "profession" id="profession" placeholder="Profession">
+                            
+                              <input type="text" class="form-control"  required  name = "profession" id="profession" placeholder="Profession">
                             </div>
                             
                              <div class="form-group col-md-12">

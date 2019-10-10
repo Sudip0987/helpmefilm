@@ -220,7 +220,7 @@ $tagDb=$db;
                         
                             <div class = 'card' style = 'border:none'>
                                 <div class = 'card-body'>
-                                    <h5 class='card-title'>Your Posts</h5>
+                                    <h5 class='card-title'>Contests related to you </h5>
                                     <div class = 'row'>
                                         <div class = 'col'>
                                        <?php echo $userPosts; ?>

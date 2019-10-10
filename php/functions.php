@@ -9,7 +9,7 @@ class Functions
         $password = mysql_real_escape_string($_GET['password']);
        
        
-            $password = md5($password);
+            //$password = md5($password);
             //$sql = "SELECT * from Users where email='$email' and password='d41d8cd98f00b204e9800998ecf8427e'";
             $sql = "SELECT * FROM Users WHERE email = '$email' and password = '$password' limit 1";
             $result = mysqli_query($db, $sql);
@@ -68,11 +68,11 @@ class Functions
         }
         if (empty($website))
         {
-            $website += "";
+            $website = "";
         }
         if (empty($contact))
         {
-            $contact += "";
+            $contact = "";
         }
         if ($password != $confirmPassword)
         {
@@ -93,7 +93,7 @@ class Functions
 
         if (count($errors) == 0)
         {
-            $password = md5($password); //encrypt password before storing in database
+            //$password = md5($password); //encrypt password before storing in database
             $sql = "Insert INTO Users (name,email,password,address,website,contact,profession,bio) VALUES
 					('$fullname','$email','$password','$address','$website','$contact','$profession','$bio')";
             mysqli_query($db, $sql);
@@ -163,10 +163,20 @@ class Functions
             $_SESSION['topicID'] = $last_id;
             $errors = ""; //resseting errors variable
             header('location:viewPost.php');
+
+            if($postType=="contest"){
+            header('location:viewContest.php');
+
+            }elseif ($postType=="job") {
+                    header('location:jobs.php');
+                # code...
+            }elseif ($postType=="question") {
+                header('location:viewPost.php');           
+                 }
         }
         else
         {
-            header('location:forum.php');
+            header('location:index.php');
 
         }
     }
@@ -177,7 +187,7 @@ class Functions
         $errors = array();
          $tags = $_POST['tags'];
     $tagsArray = explode(', ', $tags);
-    
+    $postType=$_POST['type'];
     	$topicID = $_POST['topicID'];
     	 $topic = mysql_real_escape_string($_POST['topic']);
         $topicDesc = mysql_real_escape_string($_POST['editor']);
@@ -220,8 +230,17 @@ class Functions
                 }
 
 
-            header('location:viewPost.php');
-        }
+
+            if($postType=="contest"){
+            header('location:viewContest.php');
+
+            }elseif ($postType=="job") {
+                    header('location:jobs.php');
+                # code...
+            }elseif ($postType=="question") {
+                header('location:viewPost.php');           
+                 }        
+            }
         else
         {
             header('location:forum.php');
@@ -244,7 +263,7 @@ class Functions
     }
     function deleteTopic($db)
     {
-       
+
         $sql = "";
         $topicID = $_POST['topicID'];
 
@@ -270,6 +289,10 @@ class Functions
             $result = mysqli_query($db, $sql) or die($sql);
             if ($result)
             {
+              
+             //   header('location:viewPost.php');           
+                   
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
 
             }
             else

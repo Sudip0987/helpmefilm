@@ -102,7 +102,7 @@ $showOptions = "";
     		
     }
 echo "<div class = 'container-expand-md'>
-<div class = 'row sticky-top' style= 'margin-top:25px;margin-bottom:25px;'>
+<div class = 'row ' style= 'margin-top:25px;margin-bottom:25px;'>
    <div class = 'col-12 col-md-12 col-lg-12' >
       <div class = 'card'>
          <div class = 'card-body'>

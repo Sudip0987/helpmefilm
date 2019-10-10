@@ -90,6 +90,7 @@ $_SESSION['topicID']='-1'; ?>
                               </div>
                               <div class = "row">
                                  <div class = "col col text-left">
+                                  <input type='hidden' name='location'>
                                     <input type = "text" id= "topic" value ='<?php echo $topic ?>' class = "form-control" name = "topic"/>
                                  </div>
                               </div>

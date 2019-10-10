@@ -115,7 +115,7 @@ $tagDb=$db;
       while($tagRow=$tagResult->fetch_assoc()){
         $tagID= $tagRow['tagID'];
         $tagName = $tagRow['tagName'];
-        $tags =$tags."<a href=''><small style='color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.1);padding:5px;border-radius:5px;'>".$tagName."</small></a> &nbsp&nbsp";
+        $tags =$tags."<a href=''><small style='border:1px solid rgba(255,255,255,0.1);padding:5px;border-radius:5px;'>".$tagName."</small></a> &nbsp&nbsp";
       }
     }
 
@@ -161,7 +161,7 @@ $tagDb=$db;
                     <small>$totalReplies Comments</small>
                   </div>
                   <div class ='col-sm-4'>
-                   Tags:&nbsp&nbsp $tags
+                   <small>TAGS:</small>&nbsp&nbsp $tags
 
                     
                   </div>

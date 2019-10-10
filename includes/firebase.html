@@ -154,13 +154,14 @@
         if(snapshot.hasChild('resumeUrl')){
 
           document.getElementById("resumeUrlDiv").innerHTML= "<a href = '"+snapshot.val()['resumeUrl']+"' target='blank'><span>View Resume</span></a>";
+
           document.getElementById("profileImage").src=snapshot.val()['pictureUrl'];
         }else {
 
           database.ref("Users/User"+this.userID+"/").update({
 
             resumeUrl:"",
-            pictureUrl:""
+            pictureUrl:"resources/user.png"
             
           }); 
         }

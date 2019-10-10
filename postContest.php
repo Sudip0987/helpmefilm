@@ -1,5 +1,6 @@
-<?php include('./php/registerphp.php');
-include('./php/checkUser.php');
+<?php
+ include('./php/checkUser.php');
+ include('./php/registerphp.php');
 $_SESSION['topicID']='-1'; ?>
 <!doctype html>
 <html lang="en">
@@ -33,6 +34,7 @@ $_SESSION['topicID']='-1'; ?>
       </title>
    </head>
    <?php
+   $deadline='';
    $location='';
    $tags = '';
     $topic = '';

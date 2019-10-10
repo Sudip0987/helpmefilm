@@ -152,11 +152,16 @@ loadUserFiles(departmentkey,userID);
         
     }
     function checks(){
- database.ref("resources/").set({
-            resName:file.name,
+      /*for(var i=0;i<10;i++){
+        console.log("ds");
+        var tempkey=database.ref("resources/").push().key;
+        database.ref("resources/"+tempkey+"/").set({
+        depName:""
             
 
           
-          });     }
+          });     
+      }*/
+    }
 
 </script>
