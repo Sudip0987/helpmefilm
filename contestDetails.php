@@ -55,9 +55,9 @@ $userID="";
 	$pdate = "";
 	$posterID="";
 	$subOption="Upload a file";
-	$applyButton="<div class ='card'>
-	<div class='card-body' style='background-color:black;'>
-	<div class='row'>
+	$applyButton="<div class ='card' style='border:none;'>
+	
+	<div class='row' style='background-color:#2c2e31;border:none;'>
 					<div class = 'col-12'>
 					<p class='form-control' style='border:none'>Description</a>
 					</div>
@@ -69,7 +69,7 @@ $userID="";
 				</div>
 				<div class='row'>
 					<div class = 'col-6'>
-					<p class='form-control' style='border:none'>Upload your file</a>
+					<p class='form-control' style='border:none' id = 'labelFileName'>Upload your file</p>
 					</div>
 					<div class = 'col-6'>
 					
@@ -85,7 +85,8 @@ $userID="";
 					</div>
 				</div>
 	</div>
-	</div>";
+	</div>
+	<div class='card-body' >";
 	?>
 
 	<button type='submit' hidden onclick="uploadFile('<?php echo $topicID; ?>','<?php echo $userID; ?>',document.getElementById('subDetail').value,'<?php echo $email; ?>');" name='btApply' id="btApply" class='btn btn-warning text-dark btn-banner btn-block'>Make a Submission</button>" 
@@ -146,7 +147,8 @@ $userID="";
 
     }
 $showOptions = "";
-	$applyOption = "<div class = 'col'>
+	$applyOption = "<div class='row'>
+	<div class = 'col-12' >
 							<form method = 'POST' href = 'jobPage.php'>
 							<input type = 'hidden' value = '$topicID' name = 'jobID'/>
 							$applyButton
@@ -175,6 +177,7 @@ $showOptions = "";
 
 
 								</div>
+							</div>
 							</div>";
     if($userEmail==$posterEmail){
     $applyOption="	<div class = 'card' style='border:none'>
@@ -237,9 +240,8 @@ echo "<div class = 'container-expand-md'>
 									<h5>$topic</h5>
 											<a href = 'viewProfile.php?userID=$posterID'>$name</a><br>
 									<small> &nbsp$pdate</small><br>
-									<i class='fa fa-map-marker' >&nbsp&nbsp$location</i><br>
 
-									
+
 										
 
 
@@ -275,8 +277,10 @@ echo "<div class = 'container-expand-md'>
 				<div class = 'card-body'>
 					<div class = 'row'>
 						
+						<div class = 'col-12'>
 						<div id='applyDiv'>
 						$applyOption
+						</div>
 						</div>
 						
 

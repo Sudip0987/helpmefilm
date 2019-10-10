@@ -102,6 +102,7 @@ function storeFile(tempFile){
     var files = uploadedFile.target.files;
       var file = files[0];
         console.log(file.name);
+        document.getElementById("labelFileName").innerHTML=file.name;
 
 
 }

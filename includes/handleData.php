@@ -164,4 +164,24 @@ loadUserFiles(departmentkey,userID);
       }*/
     }
 
+
+function loadHomeData(){
+    var path= "resources/";
+      database.ref(path).once('value',function(snapshot){
+
+        snapshot.forEach(function(childSnapshot){
+          var childData = childSnapshot.val();
+          var childKey=childSnapshot.key;
+  document.getElementById("resHere").innerHTML+=" <div class = 'row' >\n\
+                                       <div class = 'col'>\n\
+             <small> <a href='viewFiles.php?depKey="+childKey+"'>"+ childData['depName']+" \n\
+              </a></small>\n\
+                                        </div>\n\
+                                    </div><hr style='background-color:rgba(255,255,255,0.2);'>";
+
+          });
+
+      });
+  
+}
 </script>

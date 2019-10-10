@@ -185,14 +185,14 @@ $_SESSION['topicID']='-1'; ?>
             </div>
             <div class = "col-sm-4 text-left" style = "margin-top:20px;padding: 10px; line-height: 1.68;">
                <h4 class="text-large text-bold"><i class="wc-l-help wc-green"></i>&nbsp;Contest GUIDELINES</h4>
-               <p>Include a title to your Contest and a more detailed description. The more unique and informative your question, the better the chance you have of tutors engaging with you.</p>
-               <h5 class="text-caps spc-n">Questions</h5>
+               <p>Include a title to your Contest and a more detailed description. The more unique and informative your contest, the better the chance you have of people engaging with you.</p>
+               <h5 class="text-caps spc-n">Contest</h5>
                <ul>
-                  <li>Include a title to your question and a more detailed description. The more unique and man.</li>
-                  <li>Include a title to your question and a more detailed description. The more unique and man.</li>
-                  <li>Include a title to your question and a more detailed description. The more unique and man.</li>
+                  <li>Include a title to your contest and a more detailed description. The more unique and man.</li>
+                  <li>Include a title to your contest and a more detailed description. The more unique and man.</li>
+                  <li>Include a title to your contest and a more detailed description. The more unique and man.</li>
                </ul>
-               <p>We’ll notify you by email whenever a tutor answers your question or when you receive comments for more clarification</p>
+               
                <hr>
                <p>Remember to follow the <a class="honesty-policy-link wyzantModal" href="#">Helpmefilm</a> policy when composing your question.</p>
             </div>
